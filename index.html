@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Angel Investor ROI probabilities</title>
+    <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+    <div id="app2" >
+      <input type="range" v-model.number="investments" @change="inputChanged" min="1" max="50"># of investments: {{investments}} <br/>
+      <input type="range" v-model.number="multiple" @change="inputChanged" min="1" max="50">multiple on success: {{multiple}} <br/>
+      <input type="range" v-model.number="probability" @change="inputChanged" min="1" max="99">probability of success: {{probability}}% <br/>
+      <input type="range" v-model.number="years" @change="inputChanged" min="1" max="16"># of years until exit: {{years}} <br/>
+      <!--
+      <div>
+        <ul>
+          <li v-for="(prob,index) in probabilities">
+            {{index}}: {{prob}}
+          </li>
+        </ul>
+      </div>
+      -->
+    </div>
+    <canvas id="successesChart" class="chart"></canvas>
+    <canvas id="multipleChart" class="chart"></canvas>
+    <canvas id="irrChart" class="chart"></canvas>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
