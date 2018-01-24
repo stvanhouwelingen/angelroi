@@ -1,31 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Angel Investor ROI probabilities</title>
-    <link rel="stylesheet" href="index.css" />
-</head>
-<body>
-    <div id="app2" >
-      <input type="range" v-model.number="investments" @change="inputChanged" min="1" max="50"># of investments: {{investments}} <br/>
-      <input type="range" v-model.number="multiple" @change="inputChanged" min="1" max="50">multiple on success: {{multiple}} <br/>
-      <input type="range" v-model.number="probability" @change="inputChanged" min="1" max="99">probability of success: {{probability}}% <br/>
-      <input type="range" v-model.number="years" @change="inputChanged" min="1" max="16"># of years until exit: {{years}} <br/>
-      <!--
-      <div>
-        <ul>
-          <li v-for="(prob,index) in probabilities">
-            {{index}}: {{prob}}
-          </li>
-        </ul>
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Angel Investor Porfolio Returns</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Cabin:700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="css/grayscale.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/prob_dist.css" />
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <!--
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#download">Download</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      -->
-    </div>
-    <canvas id="successesChart" class="chart"></canvas>
-    <canvas id="multipleChart" class="chart"></canvas>
-    <canvas id="irrChart" class="chart"></canvas>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
-    <script src="index.js"></script>
-</body>
+    </nav>
+    -->
+
+    <!-- Intro Header -->
+    <header class="masthead">
+      <div class="intro-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 mx-auto">
+              <h1 class="brand-heading">Angel Investor Porfolio Returns</h1>
+              <p class="intro-text">A simple model to simulate portfolio return probabilities for
+                high-risk, high-return investments.
+               </p>
+              <a href="#about" class="btn btn-circle js-scroll-trigger">
+                <i class="fa fa-angle-double-down animated"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="content-section text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <h2>About the model</h2>
+            <p>
+              Below graphs depict probabilities for angel investor portfolio outcomes.
+              The graps are based on a simplified model. In this model it is assumed
+              that the investor has a portfolio with a specified number of investments.
+              Further it is assumed that each investment has a fixed probability to
+              either be a success or be a complete failure.
+            </p>
+            <p>
+              Each success has a fixed multiple return .
+              The model also assumes a fixed number of year before successful
+              investments exit.
+              Finally, the model assumes that the same amount is invested in all
+              portfolio companies.
+            </p>
+            <p>
+              You can select your own parameters. Respectively, the graphs below show proability distributions for
+              1) the number of successes,
+              2) the aggregated portfolio multiple, and
+              3) the aggregated portfolio internal rate of return (IRR)
+            </p>
+            <p>
+              Although this model is a simplification of reality, it does provide
+              insights in what investment strategy to follow, depending on the investors
+              risk appetite and expectations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="parameters" class="download-section content-section text-center">
+      <div class="container">
+        <div class="col-lg-8 mx-auto" >
+          <div id="app2">
+          <h2>Parameters & Results</h2>
+          <p>
+            Choose your portfolio parameters
+          </p>
+          <table border="0" style="width: 800px">
+            <colgroup>
+              <col span="1" style="width: 150px">
+              <col span="1" style="width: 30px">
+              <col span="1" >
+            </colgroup>
+            <tr>
+              <td># of investments</td>
+              <td class="number">{{investments}}</td>
+              <td><input type="range" v-model.number="investments" @change="inputChanged" min="1" max="50"></td>
+            </tr>
+            <tr>
+              <td>probability of success</td>
+              <td class="number">{{probability}}%</td>
+              <td><input type="range" v-model.number="probability" @change="inputChanged" min="1" max="99"></td>
+            </tr>
+            <tr>
+              <td>multiple on success</td>
+              <td class="number">{{multiple}}</td>
+              <td><input type="range" v-model.number="multiple" @change="inputChanged" min="1" max="100"></td>
+            </tr>
+            <tr>
+              <td># of years until exit</td>
+              <td class="number">{{years}}</td>
+              <td><input type="range" v-model.number="years" @change="inputChanged" min="1" max="16"></td>
+            </tr>
+          </table>
+          </div>
+          <div>
+            <br/>
+            <canvas id="successesChart" class="chart"></canvas>
+            <br/>
+            <canvas id="multipleChart" class="chart"></canvas>
+            <br/>
+            <canvas id="irrChart" class="chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <!--
+    <section id="contact" class="content-section text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <h2>Results</h2>
+            <canvas id="successesChart" class="chart"></canvas>
+            <canvas id="multipleChart" class="chart"></canvas>
+            <canvas id="irrChart" class="chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+  -->
+
+    <!-- Map Section -->
+    <div id="map"></div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container text-center">
+        <p>Copyright &copy; Steven van Houwelingen 2018</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+    <!--
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+    -->
+
+    <!-- Custom scripts for this template -->
+    <script src="vendor/vuejs/vue.min.js"></script>
+    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="js/grayscale.min.js"></script>
+    <script src="js/prob_dist.js"></script>
+
+  </body>
+
 </html>

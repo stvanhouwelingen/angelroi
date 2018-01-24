@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Angel Investor ROI probabilities</title>
+    <link rel="stylesheet" href="css/prob_dist.css" />
+</head>
+<body>
+    <div id="app2" >
+      <h1>Return probability distribution for angel investors</h1>
+      <div>
+        <h2>Introduction</h2>
+        <p>
+          Below graphs depict probabilities for angel investor portfolio outcomes.
+          The graps are based on a simplified model. In this model it is assumed
+          that the investor has a portfolio with a specified number of investments.
+          Further it is assumed that each investment has a fixed probability to
+          either be a success or be a complete failure.
+        </p>
+        <p>
+          Each success has a fixed multiple return .
+          The model also assumes a fixed number of year before successful
+          investments exit.
+          Finally, the model assumes that the same amount is invested in all
+          portfolio companies.
+        </p>
+        <p>
+          You can select your own parameters. Respectively, the graphs below show proability distributions for the:
+          <ul>
+            <li>number of successes</li>
+            <li>aggregated portfolio multiple</li>
+            <li>aggregated portfolio internal rate of return (IRR)</li>
+          </ul>
+        </p>
+        <p>
+          Although this model is a simplification of reality, it does provide
+          insights in what investment strategy to follow, depending on the investors
+          risk appetite and expectations.
+        </p>
+      </div>
+      <div>
+        <table border="0" style="width: 800px">
+          <colgroup>
+            <col span="1" style="width: 150px">
+            <col span="1" style="width: 30px">
+            <col span="1" >
+          </colgroup>
+          <tr>
+            <td># of investments</td>
+            <td class="number">{{investments}}</td>
+            <td><input type="range" v-model.number="investments" @change="inputChanged" min="1" max="50"></td>
+          </tr>
+          <tr>
+            <td>probability of success</td>
+            <td class="number">{{probability}}%</td>
+            <td><input type="range" v-model.number="probability" @change="inputChanged" min="1" max="99"></td>
+          </tr>
+          <tr>
+            <td>multiple on success</td>
+            <td class="number">{{multiple}}</td>
+            <td><input type="range" v-model.number="multiple" @change="inputChanged" min="1" max="100"></td>
+          </tr>
+          <tr>
+            <td># of years until exit</td>
+            <td class="number">{{years}}</td>
+            <td><input type="range" v-model.number="years" @change="inputChanged" min="1" max="16"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <canvas id="successesChart" class="chart"></canvas>
+    <canvas id="multipleChart" class="chart"></canvas>
+    <canvas id="irrChart" class="chart"></canvas>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+    <script src="js/prob_dist.js"></script>
+</body>
+</html>
